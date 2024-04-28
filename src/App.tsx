@@ -16,6 +16,8 @@ import Profile from './pages/Dashboard/Profile';
 import Settings from './pages/Dashboard/Settings';
 import Tables from './pages/Dashboard/Tables';
 import DashboardAuth from './pages/DashboardAuth';
+import TwoStepVerification from './pages/Authentication/AuthPage/TwoStepVerification';
+import Maintenance from './pages/Authentication/AuthPage/Maintenance';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -80,11 +82,34 @@ function App() {
         />
 
         <Route
-          path="/auth/signup"
+          path="/auth/two-step-verification"
           element={
             <>
-              <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignUp />
+              <PageTitle title="2 Step Verification | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <TwoStepVerification />
+            </>
+          }
+        />
+
+
+        <Route
+          path="/auth/under-maintenance"
+          element={
+            <>
+              <PageTitle title="Under Maintenance | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <Maintenance />
+            </>
+          }
+        />
+
+        <Route
+          path="/chart"
+          element={
+            <>
+              <ProtectedRoute condition={isAuthenticated}>
+                <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <Chart />
+              </ProtectedRoute>
             </>
           }
         />
