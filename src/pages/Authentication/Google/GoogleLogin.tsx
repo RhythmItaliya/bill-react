@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 
 const GoogleLogin: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);

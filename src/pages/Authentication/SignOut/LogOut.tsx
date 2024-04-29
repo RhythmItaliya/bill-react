@@ -11,7 +11,7 @@ const LogOut: React.FC = () => {
     const handleSignOut = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8080/auth/logout', {
+            const response = await fetch('http://localhost:8080/userAuth/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,6 +34,11 @@ const LogOut: React.FC = () => {
             setLoading(false);
         }
     };
+
+    // const handleSignOut = () => {
+    //     setLoading(true);
+    //     window.open("http://localhost:8080/auth/logout", "_self");
+    // };
 
     return (
         <>

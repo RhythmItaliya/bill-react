@@ -99,7 +99,7 @@ const SignUp: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/auth/email/register`, {
+      const response = await fetch(`http://localhost:8080/userAuth/email/register`, {
         credentials: 'include',
         method: 'POST',
         headers: {

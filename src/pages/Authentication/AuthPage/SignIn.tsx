@@ -54,7 +54,7 @@ const SignIn: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/auth/email/login`, {
+      const response = await fetch(`http://localhost:8080/userAuth/email/login`, {
         credentials: 'include',
         method: 'POST',
         headers: {

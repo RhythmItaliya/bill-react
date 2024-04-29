@@ -82,6 +82,16 @@ function App() {
         />
 
         <Route
+          path="/auth/signup"
+          element={
+            <>
+              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <SignUp />
+            </>
+          }
+        />
+
+        <Route
           path="/auth/two-step-verification"
           element={
             <>
@@ -90,7 +100,6 @@ function App() {
             </>
           }
         />
-
 
         <Route
           path="/auth/under-maintenance"
