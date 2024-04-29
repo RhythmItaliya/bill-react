@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../../images/logo/logo-dark.svg';
 import Logo from '../../../images/logo/logo.svg';
 import GoogleLogin from '../Google/GoogleLogin';
+
 import DarkModeSwitcher from '../../../components/Header/DarkModeSwitcher';
 
 const SignUp: React.FC = () => {
@@ -124,13 +125,23 @@ const SignUp: React.FC = () => {
         throw new Error('Failed to create account');
       }
 
+      if (response.status === 400 && responseData.emailSendFail) {
+        navigate('/dashboard');
+        return;
+      }
+
       setFormData({
         name: '',
         email: '',
         password: ''
       });
       console.log('Form data sent successfully');
-      navigate('/auth/signin');
+
+      const encodedEmail = encodeURIComponent(formData.email);
+      const encodedUsername = encodeURIComponent(formData.name);
+
+      navigate(`/auth/two-step-verification?email=${encodedEmail}&username=${encodedUsername}`);
+
     } catch (error) {
       console.error('Error sending form data:', error);
       setError('Failed to create account. Please try again.');

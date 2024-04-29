@@ -22,8 +22,7 @@ const dashboardAuth: React.FC = () => {
 
   useEffect(() => {
     const params: Params = queryString.parse(window.location.search);
-    console.log("Parsed query parameters:", params);
-
+ 
     if (!params.token || !params.oneTimeToken) {
       console.error("No token or oneTimeToken provided.");
       navigate('/auth/signin');
