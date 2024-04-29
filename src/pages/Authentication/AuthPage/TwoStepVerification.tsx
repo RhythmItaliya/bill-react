@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import queryString from "query-string";
 import LogoDark from '../../../images/logo/logo-dark.svg';
 import Logo from '../../../images/logo/logo.svg';
-import { Loader } from '../../../common/Loader';
+import { LittlelLoader, SmallLoader } from '../../../common/Loader';
 
 interface Params {
     email?: string;
@@ -141,7 +141,6 @@ const TwoStepVerification: React.FC = () => {
 
     return (
         <>
-            {loading && <Loader />}
             <div className="flex h-screen flex-col items-center justify-center overflow-hidden dark:bg-black">
                 <div className="no-scrollbar overflow-y-auto py-20">
                     <div className="mx-auto w-full max-w-[480px]">
@@ -184,7 +183,7 @@ const TwoStepVerification: React.FC = () => {
                                             onClick={handleResendCode}
                                             disabled={resendDisabled}
                                         >
-                                            Resend
+                                            {loading ? <LittlelLoader /> : "Resend"}
                                         </button>
                                     </p>
 
@@ -193,7 +192,7 @@ const TwoStepVerification: React.FC = () => {
                                         onClick={handleVerification}
                                         disabled={!allFieldsFilled}
                                     >
-                                        Verify
+                                        {loading ? <SmallLoader /> : "Verify"}
                                     </button>
 
                                     {countdown > 0 && (
@@ -207,7 +206,7 @@ const TwoStepVerification: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 };
