@@ -5,7 +5,7 @@ const GoogleLogin: React.FC = () => {
 
     const google = () => {
         setIsLoading(true);
-        window.open("http://localhost:8080/auth/google", "_self");
+        window.open(`http://localhost:8080/auth/google`, `_self`);
     };
 
     return (

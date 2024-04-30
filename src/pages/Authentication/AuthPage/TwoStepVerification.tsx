@@ -75,7 +75,7 @@ const TwoStepVerification: React.FC = () => {
             setLoading(true);
             setResendDisabled(true);
 
-            const response = await fetch('http://localhost:8080/userAuth/email/resend-verificationCode', {
+            const response = await fetch(`http://localhost:8080/userAuth/email/resend-verificationCode`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const TwoStepVerification: React.FC = () => {
         if (!allFieldsFilled) return;
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8080/userAuth/email/two-step-verification/verify', {
+            const response = await fetch(`http://localhost:8080/userAuth/email/two-step-verification/verify`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
