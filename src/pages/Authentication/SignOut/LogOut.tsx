@@ -5,6 +5,7 @@ import { SmallLoader } from '../../../common/Loader';
 
 const LogOut: React.FC = () => {
     const [cookies, , removeCookies] = useCookies(['_Xtoken']);
+    const [cookies2, , removeCookies2] = useCookies(['_Xauth']);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -21,9 +22,12 @@ const LogOut: React.FC = () => {
 
             if (response.ok) {
                 console.log('Logout...');
-                removeCookies('_Xtoken');
+                removeCookies('_Xtoken', { path: '/' });
+                removeCookies2('_Xauth', { path: '/' });
+                console.log('Cookies removed');
                 localStorage.clear();
                 sessionStorage.clear();
+                console.log('Local storage cleared');
                 navigate('/auth/signin');
             } else {
                 console.error('Logout failed:', response.statusText);

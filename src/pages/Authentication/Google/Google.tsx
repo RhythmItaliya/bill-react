@@ -14,7 +14,7 @@ const useGoogleAuth = (context: string) => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const keysResponse = await fetch('http://127.0.0.1:8080/getkeys');
+                const keysResponse = await fetch(`http://127.0.0.1:8080/getkeys`);
                 const keysData = await keysResponse.json();
                 console.log('Keys data:', keysData);
             } catch (error: any) {

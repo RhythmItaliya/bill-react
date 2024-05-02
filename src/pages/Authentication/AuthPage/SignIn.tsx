@@ -67,7 +67,6 @@ const SignIn: React.FC = () => {
       });
 
       const responseData = await response.json();
-      console.log(responseData);
 
       if (!response.ok) {
         if (response.status === 401 && responseData.notFoundUser) {

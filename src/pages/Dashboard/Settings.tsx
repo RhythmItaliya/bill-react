@@ -4,25 +4,20 @@ import DefaultLayout from '../../layout/DefaultLayout';
 import Avatar from '../../subComponets/Settings/Avatar';
 import EmailUsername from '../../subComponets/Settings/EmailUsername';
 import NameNumber from '../../subComponets/Settings/NameNumber';
+import { useSelector } from 'react-redux';
+import { RootStateType } from '../../redux/store';
 
-
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-//       const response = await fetch(`/yourEndpoint?uuid=${uuid}`);
-//       const data = await response.json();
-
-//     } catch (error) {
-//       console.error('Error fetching data:', error);
-//     }
-//   };
-
-//   if (uuid) {
-//     fetchData();
-//   }
-// }, [uuid]);
 
 const Settings: React.FC = () => {
+
+  const token = useSelector((state: RootStateType) => state.auth.token);
+  const userData = useSelector((state: RootStateType) => state.auth.userData);
+
+  useEffect(() => {
+    console.log('Token:', token);
+    console.log('UserData', userData);
+  }, [token, userData]);
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-270">

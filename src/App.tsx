@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from './auth/useAuth';
 import { useCookies } from 'react-cookie';
 import { Loader } from './common/Loader';
@@ -20,12 +20,15 @@ import TwoStepVerification from './pages/Authentication/AuthPage/TwoStepVerifica
 import Maintenance from './pages/Authentication/AuthPage/Maintenance';
 
 function App() {
-  const [loading, setLoading] = useState<boolean>(true);
   const { pathname } = useLocation();
-
-  const [cookies] = useCookies(['_Xtoken']);
-  const isAuthenticatedCookies: boolean = !!cookies['_Xtoken'];
-  const isAuthenticated: boolean = isAuthenticatedCookies;
+  const [authCookie] = useCookies(['_Xtoken']);
+  const [tokenCookie] = useCookies(['_Xauth']);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [cookies, , removeCookies] = useCookies(['_Xtoken']);
+  const [cookies2, , removeCookies2] = useCookies(['_Xauth']);
+  const [verificationSent, setVerificationSent] = useState<boolean>(false);
+  const isAuthenticated = !!authCookie['_Xtoken'] && !!tokenCookie['_Xauth'];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -37,19 +40,59 @@ function App() {
     }, 1000);
   }, []);
 
+  useEffect(() => {
+    if (isAuthenticated && !verificationSent) {
+      verifyUser(authCookie['_Xtoken'], tokenCookie['_Xauth']);
+      setVerificationSent(true);
+    }
+  }, [isAuthenticated, authCookie, tokenCookie, verificationSent]);
+
+  const verifyUser = async (authCookie: string | undefined, tokenCookie: string | undefined): Promise<void> => {
+    try {
+      setLoading(true);
+      if (!authCookie || !tokenCookie) {
+        throw new Error('Cookies are missing');
+      }
+
+      const response = await fetch(`http://localhost:8080/userAuth/email/firewall`, {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          token: tokenCookie,
+          uuid: authCookie
+        })
+      });
+
+      if (!response.ok) {
+        removeCookies('_Xtoken', { path: '/' });
+        removeCookies2('_Xauth', { path: '/' });
+        localStorage.clear();
+        sessionStorage.clear();
+        navigate('/auth/signin');
+        return;
+      }
+
+    } catch (error) {
+      console.error('Error verifying user:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return loading ? (
     <Loader />
   ) : (
     <>
       <Routes>
 
-        <Route
-          path="*"
-          element={<Navigate to="/auth/signin" replace />}
-        />
+        {/* Redirect all paths to signin if not authenticated */}
+        <Route path="*" element={<Navigate to="/" replace />} />
 
-        <Route
-          path="/"
+        {/* Public routes */}
+        <Route path="/"
           element={
             isAuthenticated ? <Navigate to="/ecommerce" replace /> : (
               <>
@@ -60,6 +103,7 @@ function App() {
           }
         />
 
+        {/* Authentication routes */}
         <Route
           index
           path="/auth"
@@ -74,20 +118,24 @@ function App() {
         <Route
           path="/auth/signin"
           element={
-            <>
-              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignIn />
-            </>
+            isAuthenticated ? <Navigate to="/ecommerce" replace /> : (
+              <>
+                <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <SignIn />
+              </>
+            )
           }
         />
 
         <Route
           path="/auth/signup"
           element={
-            <>
-              <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignUp />
-            </>
+            isAuthenticated ? <Navigate to="/ecommerce" replace /> : (
+              <>
+                <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <SignUp />
+              </>
+            )
           }
         />
 
@@ -111,18 +159,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/chart"
-          element={
-            <>
-              <ProtectedRoute condition={isAuthenticated}>
-                <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <Chart />
-              </ProtectedRoute>
-            </>
-          }
-        />
-
+        {/* Protected routes */}
         <Route
           path="/ecommerce"
           element={

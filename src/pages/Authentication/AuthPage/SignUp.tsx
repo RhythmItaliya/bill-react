@@ -107,7 +107,7 @@ const SignUp: React.FC = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username: formData.name,
+          name: formData.name,
           email: formData.email,
           password: formData.password
         })
@@ -116,9 +116,6 @@ const SignUp: React.FC = () => {
       const responseData = await response.json();
 
       if (!response.ok) {
-        if (response.status === 400 && responseData.existingUsername) {
-          setResponseError('Username already exists');
-        }
         if (response.status === 400 && responseData.existingEmail) {
           setResponseError('Email already exists');
         }
