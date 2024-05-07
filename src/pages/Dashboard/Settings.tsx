@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import Avatar from '../../subComponets/Settings/Avatar';
@@ -6,16 +6,16 @@ import EmailUsername from '../../subComponets/Settings/EmailUsername';
 import NameNumber from '../../subComponets/Settings/NameNumber';
 import { useSelector } from 'react-redux';
 import { RootStateType } from '../../redux/store';
-
+import PasswordChange from '../../subComponets/Settings/PasswordChange';
 
 const Settings: React.FC = () => {
-
   const token = useSelector((state: RootStateType) => state.auth.token);
   const userData = useSelector((state: RootStateType) => state.auth.userData);
+  const [data, setData] = useState(userData);
+  console.log(data);
 
   useEffect(() => {
-    console.log('Token:', token);
-    console.log('UserData', userData);
+    setData(userData);
   }, [token, userData]);
 
   return (
@@ -33,14 +33,13 @@ const Settings: React.FC = () => {
               </div>
 
               <div className="p-7">
-                <form action="#">
-
+                <form action='#'>
                   <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
-                    <NameNumber />
+                    <NameNumber data={data} />
                   </div>
 
                   <div className="mb-5.5">
-                    <EmailUsername />
+                    <EmailUsername data={data} />
                   </div>
 
                   <div className="flex justify-end gap-4.5">
@@ -57,18 +56,22 @@ const Settings: React.FC = () => {
                       Save
                     </button>
                   </div>
-
                 </form>
               </div>
-
             </div>
           </div>
 
           <div className="col-span-5 xl:col-span-2">
-            <Avatar />
+            <Avatar data={data} />
           </div>
-
         </div>
+
+        <div className="rounded-sm border border-stroke bg-white p-10 shadow-default dark:border-strokedark dark:bg-boxdark mt-4">
+          <div className="flex flex-wrap justify-center">
+            <PasswordChange data={data} />
+          </div>
+        </div>
+
       </div>
     </DefaultLayout>
   );

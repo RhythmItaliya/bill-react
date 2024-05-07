@@ -1,14 +1,22 @@
 // EmailUsername.tsx
-import React from 'react';
+import React, { useState } from 'react';
+import verified from '../../images/svg/verified-symbol-icon.svg';
 
-const EmailUsername: React.FC = () => {
+interface Props {
+    data?: { email?: string; username?: string; setUsername?: boolean; email_verified?: boolean; };
+}
+
+const EmailUsername: React.FC<Props> = ({ data = {} }) => {
+
+    const [newUsernameValue, setNewUsernameValue] = useState<string>('');
+
     return (
         <>
             <label
                 className="mb-3 block text-sm font-medium text-black dark:text-white"
                 htmlFor="emailAddress"
             >
-                EmailUsername Address
+                Email Address
             </label>
             <div className="relative">
                 <span className="absolute left-4.5 top-4">
@@ -41,26 +49,59 @@ const EmailUsername: React.FC = () => {
                     type="email"
                     name="emailAddress"
                     id="emailAddress"
-                    placeholder="devidjond45@gmail.com"
-                    defaultValue="devidjond45@gmail.com"
+                    autoComplete='off'
+                    placeholder={data.email || ''}
+                    defaultValue={data.email || ''}
                 />
+                {!data.email_verified && (
+                    <button
+                        className="absolute right-3.5 top-2.5 bg-blue-500 text-white px-3 py-1 rounded-md"
+                        onClick={() => console.log("Verify Email")}
+                    >
+                        Verify
+                    </button>
+                )}
+                {data.email_verified && (
+                    <img
+                        src={verified}
+                        alt="Verified"
+                        className="absolute right-3.5 top-3.5 cursor-default"
+                        width={20}
+                        height={20}
+                    />
+                )}
             </div>
 
-            <div className="mb-5.5">
+            <div className="mt-3">
                 <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="Username"
+                    htmlFor="username"
                 >
                     Username
                 </label>
-                <input
-                    className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="Username"
-                    id="Username"
-                    placeholder="devidjhon24"
-                    defaultValue="devidjhon24"
-                />
+
+                {!data.setUsername ? (
+                    <input
+                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Enter your username"
+                        autoComplete='off'
+                        value={newUsernameValue}
+                        onChange={(e) => setNewUsernameValue(e.target.value)}
+                    />
+                ) : (
+                    <input
+                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="username"
+                        id="username"
+                        autoComplete='off'
+                        placeholder={data.username || ''}
+                        defaultValue={data.username || ''}
+                    />
+                )}
             </div>
         </>
     );

@@ -213,3 +213,8 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+body{
+  overflow: hidden;
+  box-sizing: border-box;
+}

@@ -54,22 +54,23 @@ const SignUp: React.FC = () => {
       errorMessage += '\n- at least 8 characters long';
       isValid = false;
     }
-    if (!/[a-z]/.test(password)) {
-      errorMessage += '\n- Contain at least one lowercase letter';
-      isValid = false;
-    }
-    if (!/[A-Z]/.test(password)) {
-      errorMessage += '\n- Contain at least one uppercase letter';
-      isValid = false;
-    }
-    if (!/\d/.test(password)) {
-      errorMessage += '\n- Contain at least one digit';
-      isValid = false;
-    }
-    if (!/[@$!%*?&]/.test(password)) {
-      errorMessage += '\n- Contain at least one symbol';
-      isValid = false;
-    }
+    
+    // if (!/[a-z]/.test(password)) {
+    //   errorMessage += '\n- Contain at least one lowercase letter';
+    //   isValid = false;
+    // }
+    // if (!/[A-Z]/.test(password)) {
+    //   errorMessage += '\n- Contain at least one uppercase letter';
+    //   isValid = false;
+    // }
+    // if (!/\d/.test(password)) {
+    //   errorMessage += '\n- Contain at least one digit';
+    //   isValid = false;
+    // }
+    // if (!/[@$!%*?&]/.test(password)) {
+    //   errorMessage += '\n- Contain at least one symbol';
+    //   isValid = false;
+    // }
 
     return isValid ? null : errorMessage;
   };

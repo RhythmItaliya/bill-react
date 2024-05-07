@@ -1,10 +1,13 @@
 // NameNumber.tsx
 import React from 'react';
 
-const NameNumber: React.FC = () => {
+interface Props {
+    data?: { name?: string; phoneNumber?: string };
+}
+
+const NameNumber: React.FC<Props> = ({ data = {} }) => {
 
     return (
-
         <>
             <div className="w-full sm:w-1/2">
                 <label
@@ -44,8 +47,9 @@ const NameNumber: React.FC = () => {
                         type="text"
                         name="fullName"
                         id="fullName"
-                        placeholder="Devid Jhon"
-                        defaultValue="Devid Jhon"
+                        autoComplete='off'
+                        placeholder={data.name || ''}
+                        defaultValue={data.name || ''}
                     />
                 </div>
             </div>

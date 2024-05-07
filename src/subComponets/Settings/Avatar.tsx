@@ -1,8 +1,12 @@
 // Avatar.tsx
 import React from 'react';
-import userThree from '../../images/user/user-03.png';
 
-const Avatar: React.FC = () => {
+interface Props {
+    data?: { picture?: string; name?: string; };
+}
+
+const Avatar: React.FC<Props> = ({ data = {} }) => {
+
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files && files.length > 0) {
@@ -22,7 +26,7 @@ const Avatar: React.FC = () => {
     };
 
     return (
-            <>
+        <>
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
@@ -32,9 +36,22 @@ const Avatar: React.FC = () => {
                 <div className="p-7">
                     <form action="#">
                         <div className="mb-4 flex items-center gap-3">
-                            <div className="h-14 w-14 rounded-full">
-                                <img src={userThree} alt="User" />
+
+                            <div className="relative h-14 w-14 overflow-hidden rounded-full border-b border-stroke dark:border-strokedark cursor-pointer">
+                                {data.picture ? (
+                                    <img
+                                        src={data.picture}
+                                        alt={data.name ? data.name : 'User'}
+                                        className='rounded-full h-full w-full object-cover'
+
+                                    />
+                                ) : (
+                                    <svg className="rounded-full h-full w-full object-cover" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" fillRule="evenodd" clipRule="evenodd"></path>
+                                    </svg>
+                                )}
                             </div>
+
                             <div>
                                 <span className="mb-1.5 text-black dark:text-white">
                                     Edit your photo
