@@ -276,7 +276,7 @@ const SignIn: React.FC = () => {
                       </span>
                     </button>
                   </div>
-                  
+
                 </form>
 
                 <GoogleLogin />
