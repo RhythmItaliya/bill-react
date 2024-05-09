@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import LogoDark from '../../../images/logo/logo-dark.svg';
 import Logo from '../../../images/logo/logo.svg';
 import GoogleLogin from '../Google/GoogleLogin';
-import DarkModeSwitcher from '../../../components/Header/DarkModeSwitcher';
 
 const SignIn: React.FC = () => {
 
@@ -294,9 +293,6 @@ const SignIn: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="absolute bottom-8 flex justify-start w-full list-none">
-          {/* <DarkModeSwitcher /> */}
         </div>
       </div>
     </>
