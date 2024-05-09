@@ -385,7 +385,7 @@ const SignUp: React.FC = () => {
             </div>
           </div>
         </div>
-      
+
       </div>
     </>
   );
