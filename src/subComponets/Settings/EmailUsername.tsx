@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import verified from '../../images/svg/verified-symbol-icon.svg';
 
 interface Props {
@@ -10,7 +10,6 @@ interface Props {
 const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
 
     const [newEmailValue, setNewEmailValue] = useState<string>(data.email || '');
-    const [prevEmailValue, setPrevEmailValue] = useState<string>(data.email || '');
     const [newUsernameValue, setNewUsernameValue] = useState<string>(data.username || '');
     const [emailError, setEmailError] = useState<string>('');
     const [usernameError, setUsernameError] = useState<string>('');
@@ -41,7 +40,6 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
             }
         }
     };
-
 
     const validateEmail = (email: string): boolean => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -88,7 +86,7 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
                 </span>
 
                 <input
-                    className={`w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ${emailError && 'border-red-500'}`}
+                    className={`w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary cursor-text ${emailError && 'border-red-500'}`}
                     type="email"
                     name="emailAddress"
                     id="emailAddress"
@@ -96,6 +94,7 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
                     placeholder={data.email || ''}
                     defaultValue={data.email || ''}
                     onChange={handleEmailChange}
+                    disabled
                 />
                 {emailError && (
                     <p className="text-sm text-red-500 mt-1">{emailError}</p>
@@ -109,6 +108,7 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
                         Verify
                     </button>
                 )}
+
                 {data.email_verified && (
                     <img
                         src={verified}
@@ -118,6 +118,7 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
                         height={20}
                     />
                 )}
+
             </div>
 
             <div className="mt-3">
