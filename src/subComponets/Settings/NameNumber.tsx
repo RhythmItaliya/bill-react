@@ -1,11 +1,31 @@
-// NameNumber.tsx
-import React from 'react';
+import React, { useState } from 'react';
 
 interface Props {
     data?: { name?: string; phoneNumber?: string };
+    onDataChange?: (newData: { name?: string; }) => void;
+    error?: string | null;
 }
 
-const NameNumber: React.FC<Props> = ({ data = {} }) => {
+const NameNumber: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
+    const [newNameValue, setNewNameValue] = useState<string>(data.name || '');
+    const [nameError, setNameError] = useState<string>('');
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newName = e.target.value;
+        setNewNameValue(newName);
+        if (!validateName(newName)) {
+            setNameError('Name must not be empty.');
+        } else {
+            setNameError('');
+            if (onDataChange) {
+                onDataChange({ name: newName });
+            }
+        }
+    };
+
+    const validateName = (name: string): boolean => {
+        return name.trim().length > 0;
+    };
 
     return (
         <>
@@ -43,34 +63,25 @@ const NameNumber: React.FC<Props> = ({ data = {} }) => {
                         </svg>
                     </span>
                     <input
-                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        className={`w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ${nameError && 'border-red-500'}`}
                         type="text"
                         name="fullName"
                         id="fullName"
                         autoComplete='off'
                         placeholder={data.name || ''}
                         defaultValue={data.name || ''}
+                        onChange={handleNameChange}
                     />
                 </div>
+                {nameError && (
+                    <p className="text-sm text-red-500 mt-1">{nameError}</p>
+                )}
             </div>
-
-            <div className="w-full sm:w-1/2">
-                <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
-                >
-                    Phone Number
-                </label>
-                <input
-                    className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="phoneNumber"
-                    id="phoneNumber"
-                    placeholder="+990 3343 7865"
-                    defaultValue="+990 3343 7865"
-                />
-            </div>
+            {error && (
+                <p className="text-sm text-red-500 mt-1">{error}</p>
+            )}
         </>
-    )
+    );
 };
+
 export default NameNumber;

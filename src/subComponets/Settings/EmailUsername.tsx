@@ -1,14 +1,54 @@
-// EmailUsername.tsx
 import React, { useState } from 'react';
 import verified from '../../images/svg/verified-symbol-icon.svg';
 
 interface Props {
     data?: { email?: string; username?: string; setUsername?: boolean; email_verified?: boolean; };
+    onDataChange?: (newData: { email?: string; username?: string; email_verified?: boolean }) => void;
+    error?: string | null;
 }
 
-const EmailUsername: React.FC<Props> = ({ data = {} }) => {
+const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
 
-    const [newUsernameValue, setNewUsernameValue] = useState<string>('');
+    const [newEmailValue, setNewEmailValue] = useState<string>(data.email || '');
+    const [prevEmailValue, setPrevEmailValue] = useState<string>(data.email || '');
+    const [newUsernameValue, setNewUsernameValue] = useState<string>(data.username || '');
+    const [emailError, setEmailError] = useState<string>('');
+    const [usernameError, setUsernameError] = useState<string>('');
+
+    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newEmail = e.target.value;
+        setNewEmailValue(newEmail);
+        if (!validateEmail(newEmail)) {
+            setEmailError('Please enter a valid email address.');
+        } else {
+            setEmailError('');
+            if (onDataChange) {
+                onDataChange({ email: newEmail, email_verified: false });
+            }
+        }
+    };
+
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newUsername = e.target.value;
+        setNewUsernameValue(newUsername);
+        if (!validateUsername(newUsername)) {
+            setUsernameError('Username must be at least 3 characters long.');
+        } else {
+            setUsernameError('');
+            if (onDataChange) {
+                onDataChange({ username: newUsername });
+            }
+        }
+    };
+
+    const validateEmail = (email: string): boolean => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    const validateUsername = (username: string): boolean => {
+        return username.length >= 3;
+    };
 
     return (
         <>
@@ -44,15 +84,21 @@ const EmailUsername: React.FC<Props> = ({ data = {} }) => {
                         </g>
                     </svg>
                 </span>
+
                 <input
-                    className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                    className={`w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ${emailError && 'border-red-500'}`}
                     type="email"
                     name="emailAddress"
                     id="emailAddress"
                     autoComplete='off'
                     placeholder={data.email || ''}
                     defaultValue={data.email || ''}
+                    onChange={handleEmailChange}
                 />
+                {emailError && (
+                    <p className="text-sm text-red-500 mt-1">{emailError}</p>
+                )}
+
                 {!data.email_verified && (
                     <button
                         className="absolute right-3.5 top-2.5 bg-blue-500 text-white px-3 py-1 rounded-md"
@@ -79,30 +125,24 @@ const EmailUsername: React.FC<Props> = ({ data = {} }) => {
                 >
                     Username
                 </label>
+                <input
+                    className={`w-full rounded border border-stroke bg-gray py-3 pl-5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary ${usernameError && 'border-red-500'}`}
+                    type="text"
+                    name="username"
+                    id="username"
+                    autoComplete='off'
+                    placeholder={data.username || "Enter your username"}
+                    value={newUsernameValue}
+                    onChange={handleUsernameChange}
+                />
 
-                {!data.setUsername ? (
-                    <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="username"
-                        id="username"
-                        placeholder="Enter your username"
-                        autoComplete='off'
-                        value={newUsernameValue}
-                        onChange={(e) => setNewUsernameValue(e.target.value)}
-                    />
-                ) : (
-                    <input
-                        className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="username"
-                        id="username"
-                        autoComplete='off'
-                        placeholder={data.username || ''}
-                        defaultValue={data.username || ''}
-                    />
+                {usernameError && (
+                    <p className="text-sm text-red-500 mt-1">{usernameError}</p>
                 )}
             </div>
+            {error && (
+                <p className="text-sm text-red-500 mt-1">{error}</p>
+            )}
         </>
     );
 };

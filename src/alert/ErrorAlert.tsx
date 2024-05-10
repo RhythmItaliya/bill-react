@@ -1,10 +1,11 @@
+// ErrorAlert.tsx
 import React from 'react';
 
-interface ErrorAlertProps {
+interface Props {
   errorMessage: string;
 }
 
-const ErrorAlert: React.FC<ErrorAlertProps> = ({ errorMessage }) => {
+const ErrorAlert: React.FC<Props> = ({ errorMessage }) => {
   return (
     <div className="flex w-full border-l-6 border-[#F87171] bg-[#F87171] bg-opacity-[15%] shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-4 items-center mt-5">
       <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#F87171]">
