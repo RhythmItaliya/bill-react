@@ -3,14 +3,22 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserOne from '../../images/user/user-01.png';
 import LogOut from '../../pages/Authentication/SignOut/LogOut';
+import { useSelector } from 'react-redux';
+import { RootStateType } from '../../redux/store';
 
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const userData = useSelector((state: RootStateType) => state.auth.userData);
+  const [data, setData] = useState(userData);
+
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
-  // close on click outside
+  useEffect(() => {
+    setData(userData);
+  }, [userData]);
+
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
@@ -26,7 +34,7 @@ const DropdownUser = () => {
     return () => document.removeEventListener('click', clickHandler);
   });
 
-  // close if the esc key is pressed
+
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
@@ -36,6 +44,15 @@ const DropdownUser = () => {
     return () => document.removeEventListener('keydown', keyHandler);
   });
 
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return '';
+    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+  };
+
+  // Example usage:
+  const name = data.name || '';
+  const capitalizedFirstName = capitalizeFirstLetter(name);
+
   return (
     <div className="relative">
       <Link
@@ -44,15 +61,24 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         to="#"
       >
+
         <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
-          </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-sm font-medium text-black dark:text-white">{capitalizedFirstName || ''}</span>
+          <span className="block text-xs">{data.username || ''}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+          {data.picture ? (
+            <img
+              src={data.picture}
+              alt={data.name ? data.name : 'User'}
+              className='rounded-full h-full w-full object-cover'
+            />
+          ) : (
+            <svg className="rounded-full h-full w-full object-cover" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" fillRule="evenodd" clipRule="evenodd"></path>
+            </svg>
+          )}
         </span>
 
         <svg

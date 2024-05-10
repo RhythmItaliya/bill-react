@@ -175,7 +175,7 @@ const Settings: React.FC = () => {
 
         <div className="rounded-sm border border-stroke bg-white p-10 shadow-default dark:border-strokedark dark:bg-boxdark mt-4">
           <div className="flex flex-wrap justify-center">
-            <PasswordChange data={data} />
+            <PasswordChange />
           </div>
         </div>
 
