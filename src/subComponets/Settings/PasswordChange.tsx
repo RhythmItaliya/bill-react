@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import ErrorAlert from '../../alert/ErrorAlert';
 import { useSelector } from 'react-redux';
 import { RootStateType } from '../../redux/store';
 
-interface Props {
-    data?: { setPassword?: boolean; };
-}
-
-const PasswordChange: React.FC<Props> = ({ data = {} }) => {
+const PasswordChange: React.FC = () => {
     const [oldPasswordValue, setOldPasswordValue] = useState<string>('');
     const [newPasswordValue, setNewPasswordValue] = useState<string>('');
     const [confirmPasswordValue, setConfirmPasswordValue] = useState<string>('');
@@ -22,6 +17,8 @@ const PasswordChange: React.FC<Props> = ({ data = {} }) => {
 
     const token = useSelector((state: RootStateType) => state.auth.token);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [passwordSet, setPasswordSet] = useState<boolean>(false);
 
     const verifyOldPassword = async () => {
         try {
@@ -139,7 +136,35 @@ const PasswordChange: React.FC<Props> = ({ data = {} }) => {
         setConfirmPasswordValue('');
         setError('');
         setOldPasswordValue('');
+
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await fetch(`http://localhost:8080/profile/update/password-set?token=${token}`, {
+                    credentials: 'include',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to check password set');
+                }
+
+                const data = await response.json();
+                setPasswordSet(!!data.passwordSet);
+                setError('');
+            } catch (error) {
+                setError('Failed to check password set');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
     };
+
 
     const togglePasswordVisibility = (field: string) => {
         switch (field) {
@@ -230,7 +255,7 @@ const PasswordChange: React.FC<Props> = ({ data = {} }) => {
                         <h3 className="pb-2 text-xl font-bold text-black dark:text-white sm:text-2xl">Change Password</h3>
                         <span className="mx-auto mb-6 inline-block h-1 w-22.5 rounded bg-primary"></span>
 
-                        {!isOldPasswordVerified && data.setPassword && (
+                        {!isOldPasswordVerified && passwordSet && (
                             <>
                                 <div className="mb-4">
                                     <div className="relative">
@@ -249,7 +274,7 @@ const PasswordChange: React.FC<Props> = ({ data = {} }) => {
                             </>
                         )}
 
-                        {(isOldPasswordVerified || !data.setPassword) && (
+                        {(isOldPasswordVerified || !passwordSet) && (
                             <>
                                 <div className="mb-4">
                                     <div className="relative">
@@ -289,7 +314,7 @@ const PasswordChange: React.FC<Props> = ({ data = {} }) => {
                                     className="block w-full rounded border border-stroke bg-gray p-3 text-center font-medium text-black transition hover:border-meta-1 hover:bg-meta-1 hover:text-white dark:border-strokedark dark:bg-meta-4 dark:text-white dark:hover:border-meta-1 dark:hover:bg-meta-1 select-none">Cancel</button>
                             </div>
 
-                            {!isOldPasswordVerified && data.setPassword && (
+                            {!isOldPasswordVerified && passwordSet && (
 
                                 <div className="2xsm:w-1/2 w-full px-3">
                                     <button
@@ -299,7 +324,7 @@ const PasswordChange: React.FC<Props> = ({ data = {} }) => {
                                 </div>
                             )}
 
-                            {(isOldPasswordVerified || !data.setPassword) && (
+                            {(isOldPasswordVerified || !passwordSet) && (
 
                                 <div className="2xsm:w-1/2 w-full px-3">
                                     <button

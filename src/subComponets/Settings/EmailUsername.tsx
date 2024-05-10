@@ -29,7 +29,8 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
     };
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newUsername = e.target.value;
+        let newUsername = e.target.value.toLowerCase();
+        newUsername = newUsername.replace(/[^a-zA-Z0-9_]/g, '');
         setNewUsernameValue(newUsername);
         if (!validateUsername(newUsername)) {
             setUsernameError('Username must be at least 3 characters long.');
@@ -40,6 +41,7 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
             }
         }
     };
+
 
     const validateEmail = (email: string): boolean => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
