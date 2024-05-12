@@ -9,7 +9,7 @@ const ECommerce: React.FC = () => {
       <Breadcrumb pageName="Dashboard" />
 
       <div>
-        <h1>Ecoomers</h1>
+        <h1>home</h1>
       </div>
     </DefaultLayout>
   );

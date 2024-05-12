@@ -40,7 +40,7 @@ const DashboardAuth: React.FC = () => {
 
         dispatch(setToken(queryParams.token!));
         dispatch(setUserData(userData.responseData));
-        navigate('/ecommerce');
+        navigate('/home');
       } catch (error: any) {
         handleError(error);
       } finally {

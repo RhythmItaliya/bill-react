@@ -7,7 +7,7 @@ import { Loader } from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/AuthPage/SignIn';
 import SignUp from './pages/Authentication/AuthPage/SignUp';
-import Calendar from './pages/Dashboard/Calendar';
+import Invoice from './pages/Dashboard/Invoice';
 import Chart from './pages/Dashboard/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
@@ -94,7 +94,7 @@ function App() {
         {/* Public routes */}
         <Route path="/"
           element={
-            isAuthenticated ? <Navigate to="/ecommerce" replace /> : (
+            isAuthenticated ? <Navigate to="/home" replace /> : (
               <>
                 <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                 <SignIn />
@@ -118,7 +118,7 @@ function App() {
         <Route
           path="/auth/signin"
           element={
-            isAuthenticated ? <Navigate to="/ecommerce" replace /> : (
+            isAuthenticated ? <Navigate to="/home" replace /> : (
               <>
                 <PageTitle title="Signin | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                 <SignIn />
@@ -130,7 +130,7 @@ function App() {
         <Route
           path="/auth/signup"
           element={
-            isAuthenticated ? <Navigate to="/ecommerce" replace /> : (
+            isAuthenticated ? <Navigate to="/home" replace /> : (
               <>
                 <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                 <SignUp />
@@ -161,11 +161,11 @@ function App() {
 
         {/* Protected routes */}
         <Route
-          path="/ecommerce"
+          path="/home"
           element={
             <>
               <ProtectedRoute condition={isAuthenticated}>
-                <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <PageTitle title="Home | TailAdmin - Tailwind CSS Admin Dashboard Template" />
                 <ECommerce />
               </ProtectedRoute>
             </>
@@ -173,12 +173,12 @@ function App() {
         />
 
         <Route
-          path="/calendar"
+          path="/invoice"
           element={
             <>
               <ProtectedRoute condition={isAuthenticated}>
-                <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <Calendar />
+                <PageTitle title="Invoice | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+                <Invoice />
               </ProtectedRoute>
             </>
           }
