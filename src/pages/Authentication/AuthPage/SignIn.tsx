@@ -74,9 +74,9 @@ const SignIn: React.FC = () => {
         if (response.status === 401 && responseData.wrongPassword) {
           setResponseError('Username and Password are incorrect');
         }
-        if (response.status === 401 && responseData.emailNotVerified) {
-          setResponseError('Please verify your account. Check your email.');
-        }
+        // if (response.status === 401 && responseData.emailNotVerified) {
+        //   setResponseError('Please verify your account. Check your email.');
+        // }
         throw new Error('Failed to create account');
       }
 
