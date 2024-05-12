@@ -1,7 +1,6 @@
 import React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import UserOne from '../../images/user/user-01.png';
 import LogOut from '../../pages/Authentication/SignOut/LogOut';
 import { useSelector } from 'react-redux';
 import { RootStateType } from '../../redux/store';
@@ -10,14 +9,24 @@ import { RootStateType } from '../../redux/store';
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const userData = useSelector((state: RootStateType) => state.auth.userData);
-  const [data, setData] = useState(userData);
+  const [data, setData] = useState(userData || null);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
 
   useEffect(() => {
-    setData(userData);
+    setData(userData || null);
   }, [userData]);
+
+  const capitalizeFirstLetter = (str: string) => {
+    if (!str) return '';
+    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+  };
+
+  const name = data?.name || '';
+  const capitalizedFirstName = capitalizeFirstLetter(name);
+  const username = data?.username || '';
+  const picture = data?.picture || '';
 
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -34,7 +43,6 @@ const DropdownUser = () => {
     return () => document.removeEventListener('click', clickHandler);
   });
 
-
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
       if (!dropdownOpen || keyCode !== 27) return;
@@ -43,15 +51,6 @@ const DropdownUser = () => {
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
-
-  const capitalizeFirstLetter = (str: string) => {
-    if (!str) return '';
-    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-  };
-
-  // Example usage:
-  const name = data.name || '';
-  const capitalizedFirstName = capitalizeFirstLetter(name);
 
   return (
     <div className="relative">
@@ -64,21 +63,19 @@ const DropdownUser = () => {
 
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">{capitalizedFirstName || ''}</span>
-          <span className="block text-xs">{data.username || ''}</span>
+          <span className="block text-xs">{username}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          {data.picture ? (
-            <img
-              src={data.picture}
-              alt={data.name ? data.name : 'User'}
-              className='rounded-full h-full w-full object-cover'
-            />
-          ) : (
-            <svg className="rounded-full h-full w-full object-cover" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" fillRule="evenodd" clipRule="evenodd"></path>
-            </svg>
-          )}
+          {
+            picture ? (
+              <img src={picture} alt="User profile" className="w-10 h-10 rounded-full" />
+            ) : (
+              <svg className="rounded-full h-full w-full object-cover" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" fillRule="evenodd" clipRule="evenodd"></path>
+              </svg>
+            )
+          }
         </span>
 
         <svg

@@ -114,8 +114,8 @@ const EmailUsername: React.FC<Props> = ({ data = {}, onDataChange, error }) => {
                         src={verified}
                         alt="Verified"
                         className="absolute right-3.5 top-3.5 cursor-default"
-                        width={20}
-                        height={20}
+                        width={22}
+                        height={22}
                     />
                 )}
 
