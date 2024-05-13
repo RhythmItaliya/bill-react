@@ -9,7 +9,7 @@ import SignIn from './pages/Authentication/AuthPage/SignIn';
 import SignUp from './pages/Authentication/AuthPage/SignUp';
 import Invoice from './pages/Dashboard/Invoice';
 import Chart from './pages/Dashboard/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
+import Home from './pages/Dashboard/Home';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Dashboard/Profile';
@@ -166,7 +166,7 @@ function App() {
             <>
               <ProtectedRoute condition={isAuthenticated}>
                 <PageTitle title="Home | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-                <ECommerce />
+                <Home />
               </ProtectedRoute>
             </>
           }
