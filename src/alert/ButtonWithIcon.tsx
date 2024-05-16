@@ -4,7 +4,7 @@ const ButtonWithIcon: React.FC<{ to: string, text: string }> = ({ to, text }) =>
   return (
     <Link
       to={to}
-      className='inline-flex items-center justify-center gap-2.5 bg-primary py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 rounded-md'
+      className='inline-flex items-center justify-center gap-2.5 bg-primary py-3 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10 rounded-md w-50'
     >
       <span>
         <svg
